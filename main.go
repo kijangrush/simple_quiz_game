@@ -12,33 +12,40 @@ func main() {
 	fmt.Println("🎯 Welcome to the Multiple-Choice Quiz Game!")
 	fmt.Println("===========================================")
 	
+	// Initialize quiz manager
+	quizManager := NewQuizManager()
+	
 	// Display available categories
-	categories := GetCategories()
-	fmt.Println("\nAvailable Categories:")
-	for i, category := range categories {
-		fmt.Printf("%d. %s\n", i+1, category.Name)
-	}
+	quizManager.DisplayCategories()
 	
 	// Get user category choice
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("\nSelect a category (number): ")
-	categoryInput, _ := reader.ReadString('\n')
-	categoryInput = strings.TrimSpace(categoryInput)
-	categoryIndex, err := strconv.Atoi(categoryInput)
-	
-	if err != nil || categoryIndex < 1 || categoryIndex > len(categories) {
-		fmt.Println("❌ Invalid category selection!")
-		return
-	}
-	
-	selectedCategory := categories[categoryIndex-1]
+	category := getUserCategoryChoice(quizManager)
 	
 	// Start the quiz
-	score := StartQuiz(selectedCategory.Questions)
+	quizManager.StartQuiz(category)
+}
+
+func getUserCategoryChoice(qm *QuizManager) string {
+	reader := bufio.NewReader(os.Stdin)
 	
-	// Display results
-	fmt.Printf("\n🎊 Quiz Completed! 🎊\n")
-	fmt.Printf("Your Score: %d/%d (%.1f%%)\n", 
-		score, len(selectedCategory.Questions), 
-		float64(score)/float64(len(selectedCategory.Questions))*100)
+	for {
+		fmt.Print("\nChoose a category (enter number): ")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+		
+		choice, err := strconv.Atoi(input)
+		if err != nil || choice < 1 || choice > len(qm.categories) {
+			fmt.Println("❌ Invalid choice. Please try again.")
+			continue
+		}
+		
+		// Convert choice to category name
+		i := 1
+		for cat := range qm.categories {
+			if i == choice {
+				return cat
+			}
+			i++
+		}
+	}
 }
