@@ -1,89 +1,94 @@
-## Multiple-Choice Quiz Game
+# Multiple-Choice Quiz Game
 
 A simple command-line multiple-choice quiz game written in Go with scoring and topic categories.
 
-### Features
+## Features
 
-- 📚 Multiple topic categories
-- ✅ Real-time scoring
-- 🎯 Interactive command-line interface
-- 📊 Final score display with percentage
+- 🎯 Multiple topic categories (Programming, Science, History)
+- 📊 Real-time scoring and progress tracking
+- 🏆 Performance feedback based on score
+- ❌ Error handling for invalid inputs
+- 📝 Easy to extend with new questions and categories
 
-### How to Use
+## How to Use
 
-1. **Prerequisites**: Make sure you have Go installed on your system.
+### Prerequisites
+- Go 1.21 or later installed on your system
 
-2. **Setup**: 
+### Installation & Running
+
+1. **Create a new directory for the project:**
    ```bash
-   # Clone or create the project directory with all the files
-   # The files should be: main.go, models.go, quiz.go, data.go, go.mod
+   mkdir quiz-game
+   cd quiz-game
    ```
 
-3. **Run the game**:
+2. **Create the files:**
+   - Copy the code from above into `main.go`, `quiz_manager.go`, and `go.mod`
+
+3. **Run the game:**
    ```bash
-   go run .
-   ```
-   Or build and run:
-   ```bash
-   go build -o quiz-game
-   ./quiz-game
+   go run main.go quiz_manager.go
    ```
 
-4. **Game Flow**:
-   - The program will display available categories
-   - Select a category by entering its number
-   - Answer each question by entering the number of your choice
-   - After completing all questions, your score will be displayed
+### Game Flow
 
-### File Structure
+1. **Start the game:** The program will display a welcome message and available categories
+2. **Choose a category:** Select a category by entering the corresponding number
+3. **Answer questions:** Read each question and select your answer by entering 1, 2, 3, or 4
+4. **Get immediate feedback:** After each question, you'll see if you answered correctly
+5. **View final score:** At the end, see your total score and performance rating
 
-- `main.go` - Entry point and main game flow
-- `models.go` - Data structures (Question, Category)
-- `quiz.go` - Quiz logic and scoring
-- `data.go` - Sample quiz questions and categories
-- `go.mod` - Go module definition
-
-### Adding More Questions
-
-To add more questions or categories, modify the `GetCategories()` function in `data.go`. Follow the existing structure:
-
-```go
-{
-    Name: "Your Category Name",
-    Questions: []Question{
-        {
-            Text: "Your question?",
-            Options: []string{"Option 1", "Option 2", "Option 3", "Option 4"},
-            Answer: 0, // Index of correct answer (0-based)
-        },
-        // Add more questions...
-    },
-}
-```
-
-### Example Output
+### Example Session
 ```
 🎯 Welcome to the Multiple-Choice Quiz Game!
 ===========================================
 
-Available Categories:
-1. Programming Fundamentals
-2. Go Language
-3. General Knowledge
+📚 Available Categories:
+----------------------
+1. Programming (3 questions)
+2. Science (2 questions)
+3. History (2 questions)
 
-Select a category (number): 2
+Choose a category (enter number): 1
+
+🚀 Starting Programming Quiz!
+======================
 
 Question 1/3:
-❓ Which keyword is used to declare a variable in Go?
-  1. var
-  2. let
-  3. const
-  4. variable
-Your answer (number): 1
-✅ Correct!
+❓ What does 'GOROOT' environment variable point to in Go?
 
-🎊 Quiz Completed! 🎊
-Your Score: 2/3 (66.7%)
+  1. Go source code location
+  2. Go binary installation directory
+  3. Go workspace directory
+  4. Go module cache
+
+Enter your answer (1-4): 2
+✅ Correct!
 ```
 
-Enjoy your quiz game! 🎮
+### Adding New Questions
+
+To add new questions or categories, modify the `initializeQuestions()` method in `quiz_manager.go`:
+
+```go
+qm.categories["Your Category"] = []Question{
+    {
+        Text: "Your question?",
+        Options: []string{"Option 1", "Option 2", "Option 3", "Option 4"},
+        Answer: 0, // Index of correct answer (0-based)
+    },
+    // Add more questions...
+}
+```
+
+### Building for Distribution
+
+To create an executable binary:
+
+```bash
+go build -o quiz-game
+./quiz-game
+```
+
+Enjoy the quiz game! 🎮
