@@ -1,94 +1,88 @@
-# Multiple-Choice Quiz Game
+## Go Quiz Game
 
 A simple command-line multiple-choice quiz game written in Go with scoring and topic categories.
 
-## Features
+### Features
 
-- 🎯 Multiple topic categories (Programming, Science, History)
-- 📊 Real-time scoring and progress tracking
-- 🏆 Performance feedback based on score
-- ❌ Error handling for invalid inputs
-- 📝 Easy to extend with new questions and categories
+- 🎯 Multiple topic categories (Programming Basics, Go Language, General Knowledge)
+- 📊 Real-time scoring and performance feedback
+- 🔄 Play multiple rounds with different categories
+- 🎮 User-friendly command-line interface
+- ✅ Immediate feedback on answers
 
-## How to Use
+### How to Use
 
-### Prerequisites
-- Go 1.21 or later installed on your system
+1. **Prerequisites**: Make sure you have Go installed on your system (version 1.16 or higher).
 
-### Installation & Running
-
-1. **Create a new directory for the project:**
+2. **Setup**:
    ```bash
+   # Clone or create the project directory
    mkdir quiz-game
    cd quiz-game
+   
+   # Create the files above or copy them into the directory
+   # The project structure should be:
+   # quiz-game/
+   # ├── main.go
+   # ├── quiz.go
+   # └── go.mod
    ```
 
-2. **Create the files:**
-   - Copy the code from above into `main.go`, `quiz_manager.go`, and `go.mod`
-
-3. **Run the game:**
+3. **Run the game**:
    ```bash
-   go run main.go quiz_manager.go
+   go run .
    ```
 
-### Game Flow
+   Or build and run:
+   ```bash
+   go build
+   ./quiz-game
+   ```
 
-1. **Start the game:** The program will display a welcome message and available categories
-2. **Choose a category:** Select a category by entering the corresponding number
-3. **Answer questions:** Read each question and select your answer by entering 1, 2, 3, or 4
-4. **Get immediate feedback:** After each question, you'll see if you answered correctly
-5. **View final score:** At the end, see your total score and performance rating
+### Game Instructions
 
-### Example Session
+1. When you start the game, you'll see a list of available categories
+2. Choose a category by entering the corresponding number
+3. Answer each multiple-choice question by entering the number of your choice
+4. After completing a quiz, you'll see your score and performance feedback
+5. You can choose to play again with the same or different categories
+
+### Categories Included
+
+- **Programming Basics**: Fundamental computer science concepts
+- **Go Language**: Specific questions about the Go programming language
+- **General Knowledge**: Miscellaneous trivia questions
+
+### Customization
+
+You can easily add more categories or questions by modifying the `GetCategories()` function in `quiz.go`. Simply add new `Category` structs with your desired questions.
+
+### Example Game Session
+
 ```
-🎯 Welcome to the Multiple-Choice Quiz Game!
-===========================================
+🎯 Welcome to the Go Quiz Game!
+================================
 
-📚 Available Categories:
-----------------------
-1. Programming (3 questions)
-2. Science (2 questions)
-3. History (2 questions)
+Available Categories:
+1. Programming Basics
+2. Go Language
+3. General Knowledge
+4. Exit
 
-Choose a category (enter number): 1
+Choose a category (1-4): 1
 
-🚀 Starting Programming Quiz!
-======================
+🏁 Starting Programming Basics Quiz!
+========================================
 
 Question 1/3:
-❓ What does 'GOROOT' environment variable point to in Go?
-
-  1. Go source code location
-  2. Go binary installation directory
-  3. Go workspace directory
-  4. Go module cache
+❓ What does CPU stand for?
+   1. Computer Processing Unit
+   2. Central Processing Unit
+   3. Central Program Utility
+   4. Computer Program Unit
 
 Enter your answer (1-4): 2
 ✅ Correct!
 ```
 
-### Adding New Questions
-
-To add new questions or categories, modify the `initializeQuestions()` method in `quiz_manager.go`:
-
-```go
-qm.categories["Your Category"] = []Question{
-    {
-        Text: "Your question?",
-        Options: []string{"Option 1", "Option 2", "Option 3", "Option 4"},
-        Answer: 0, // Index of correct answer (0-based)
-    },
-    // Add more questions...
-}
-```
-
-### Building for Distribution
-
-To create an executable binary:
-
-```bash
-go build -o quiz-game
-./quiz-game
-```
-
-Enjoy the quiz game! 🎮
+Enjoy playing the quiz game! 🎮
