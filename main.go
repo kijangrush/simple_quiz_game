@@ -1,77 +1,49 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
 )
 
 func main() {
-	fmt.Println("🎯 Welcome to the Go Quiz Game!")
-	fmt.Println("================================")
+	fmt.Println("🎯 Welcome to the Multiple-Choice Quiz Game!")
+	fmt.Println("===========================================")
 	
 	// Display available categories
-	categories := GetCategories()
-	for {
-		fmt.Println("\nAvailable Categories:")
-		for i, category := range categories {
-			fmt.Printf("%d. %s\n", i+1, category.Name)
-		}
-		fmt.Printf("%d. Exit\n", len(categories)+1)
-		
-		// Get user category choice
-		choice := GetUserChoice(len(categories) + 1)
-		if choice == len(categories)+1 {
-			fmt.Println("Thanks for playing! Goodbye!")
-			return
-		}
-		
-		// Start the quiz for selected category
-		selectedCategory := categories[choice-1]
-		StartQuiz(selectedCategory)
-		
-		// Ask if user wants to play again
-		if !AskToPlayAgain() {
-			fmt.Println("Thanks for playing! Goodbye!")
-			return
-		}
+	fmt.Println("\nAvailable Categories:")
+	for i, category := range getCategories() {
+		fmt.Printf("%d. %s\n", i+1, category.Name)
 	}
-}
-
-func GetUserChoice(max int) int {
-	reader := bufio.NewReader(os.Stdin)
 	
-	for {
-		fmt.Printf("\nChoose a category (1-%d): ", max)
-		input, _ := reader.ReadString('\n')
-		input = strings.TrimSpace(input)
-		
-		choice, err := strconv.Atoi(input)
-		if err != nil || choice < 1 || choice > max {
-			fmt.Printf("Invalid choice. Please enter a number between 1 and %d.\n", max)
-			continue
-		}
-		
-		return choice
+	// Get user category choice
+	var choice int
+	fmt.Print("\nSelect a category (1-3): ")
+	_, err := fmt.Scan(&choice)
+	if err != nil || choice < 1 || choice > 3 {
+		fmt.Println("❌ Invalid choice. Please run the program again.")
+		return
 	}
-}
-
-func AskToPlayAgain() bool {
-	reader := bufio.NewReader(os.Stdin)
 	
-	for {
-		fmt.Print("\nWould you like to play again? (y/n): ")
-		input, _ := reader.ReadString('\n')
-		input = strings.TrimSpace(strings.ToLower(input))
-		
-		if input == "y" || input == "yes" {
-			return true
-		} else if input == "n" || input == "no" {
-			return false
-		} else {
-			fmt.Println("Please enter 'y' for yes or 'n' for no.")
-		}
+	// Run the quiz
+	categories := getCategories()
+	selectedCategory := categories[choice-1]
+	
+	fmt.Printf("\nStarting %s Quiz...\n", selectedCategory.Name)
+	fmt.Println("========================")
+	
+	score := runQuiz(selectedCategory.Questions)
+	
+	// Display results
+	fmt.Printf("\n🎊 Quiz Completed! 🎊\n")
+	fmt.Printf("Your Score: %d/%d (%.1f%%)\n", 
+		score, len(selectedCategory.Questions), 
+		float64(score)/float64(len(selectedCategory.Questions))*100)
+	
+	if score == len(selectedCategory.Questions) {
+		fmt.Println("🏆 Perfect score! Excellent work!")
+	} else if score >= len(selectedCategory.Questions)/2 {
+		fmt.Println("👍 Good job! Keep practicing!")
+	} else {
+		fmt.Println("💪 Keep learning! You'll do better next time!")
 	}
 }
