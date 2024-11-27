@@ -6,44 +6,41 @@ import (
 )
 
 func main() {
-	fmt.Println("🎯 Welcome to the Multiple-Choice Quiz Game!")
-	fmt.Println("===========================================")
+	fmt.Println("🎯 Welcome to the Go Quiz Game!")
+	fmt.Println("===============================")
 	
-	// Display available categories
-	fmt.Println("\nAvailable Categories:")
-	for i, category := range getCategories() {
-		fmt.Printf("%d. %s\n", i+1, category.Name)
+	// Load quiz data
+	quizzes := LoadQuizzes()
+	
+	// Display available topics
+	fmt.Println("\nAvailable Quiz Topics:")
+	for i, topic := range quizzes {
+		fmt.Printf("%d. %s\n", i+1, topic.Name)
 	}
 	
-	// Get user category choice
+	// Get user topic choice
 	var choice int
-	fmt.Print("\nSelect a category (1-3): ")
+	fmt.Print("\nSelect a topic (number): ")
 	_, err := fmt.Scan(&choice)
-	if err != nil || choice < 1 || choice > 3 {
-		fmt.Println("❌ Invalid choice. Please run the program again.")
+	if err != nil || choice < 1 || choice > len(quizzes) {
+		fmt.Println("❌ Invalid choice!")
 		return
 	}
 	
-	// Run the quiz
-	categories := getCategories()
-	selectedCategory := categories[choice-1]
+	selectedQuiz := quizzes[choice-1]
 	
-	fmt.Printf("\nStarting %s Quiz...\n", selectedCategory.Name)
-	fmt.Println("========================")
-	
-	score := runQuiz(selectedCategory.Questions)
+	// Start the quiz
+	score := StartQuiz(selectedQuiz)
 	
 	// Display results
-	fmt.Printf("\n🎊 Quiz Completed! 🎊\n")
-	fmt.Printf("Your Score: %d/%d (%.1f%%)\n", 
-		score, len(selectedCategory.Questions), 
-		float64(score)/float64(len(selectedCategory.Questions))*100)
+	fmt.Printf("\n🎉 Quiz Completed!\n")
+	fmt.Printf("Your score: %d/%d (%.1f%%)\n", 
+		score, len(selectedQuiz.Questions), 
+		float64(score)/float64(len(selectedQuiz.Questions))*100)
 	
-	if score == len(selectedCategory.Questions) {
-		fmt.Println("🏆 Perfect score! Excellent work!")
-	} else if score >= len(selectedCategory.Questions)/2 {
-		fmt.Println("👍 Good job! Keep practicing!")
+	if float64(score)/float64(len(selectedQuiz.Questions)) >= 0.7 {
+		fmt.Println("🏆 Excellent! You passed!")
 	} else {
-		fmt.Println("💪 Keep learning! You'll do better next time!")
+		fmt.Println("💪 Keep practicing!")
 	}
 }
